@@ -3,13 +3,14 @@
     --azulmedio: #3871C1;
     --azulclaro: #51Aee5;
     --turquesa: #5CE1E6;
+    --prueba:  #8cc5c7;
 }
 
 body{
     font-family: Arial, Helvetica, sans-serif, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(180deg, #E3F2FD, #FFFFFF);
+    background: linear-gradient(180deg, #d6d4d4 0%, #d6d4d4 70%, #8cc5c7 75%);
     background-size:cover; /* Asegura que la imagen cubra toda la página */
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     background-position: center; /* Centra la imagen */
@@ -27,7 +28,7 @@ flex-direction: column;
 }
 
 .navbar{
-    background: linear-gradient(to top , var(--turquesa) ,var(--azulmedio),var(--azuloscuro)) !important;
+    background: linear-gradient(to top , var(--prueba) ,var(--azulmedio),var(--azuloscuro)) !important;
     
 }
 
@@ -64,7 +65,7 @@ flex-direction: column;
 
 
 footer{
-    background: linear-gradient(to bottom , var(--turquesa) ,var(--azulmedio),var(--azuloscuro));
+    background: linear-gradient(to bottom , var(--prueba) ,var(--azulmedio),var(--azuloscuro));
     text-align: center;
     padding: 1rem 2rem;
     margin-top: auto; /* Empuja el footer hacia abajo cuando el contenido es corto */
