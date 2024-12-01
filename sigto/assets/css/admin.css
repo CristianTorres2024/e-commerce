@@ -1,0 +1,162 @@
+.navbar {
+    background-color: #333;
+    padding: 10px;
+}
+
+.nav-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-item {
+    margin-right: 20px;
+    position: relative;
+}
+
+.nav-link {
+    color: rgb(252, 252, 252);
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    padding: 10px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #0267FF;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.dropdown-btn {
+    background-color: #068bf1;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 5px;
+    width: 100%;
+}
+.action-box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: #fff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.panel-gestion {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+
+.edit-btn:hover, .view-logins-btn:hover {
+    background-color: #024C9F;
+}
+
+.delete-btn {
+    background-color: #FF0026;
+}
+
+.delete-btn:hover {
+    background-color: #D4001E;
+}
+
+#editar, #eliminar, .view-logins-btn, .view-compras-btn {
+    text-decoration: none;
+    background-color: #0267FF;
+    color: white;
+    border-radius: 1em;
+    padding: 0.5em;
+    font-weight: bold;
+    display: inline-block;
+    width: auto; /* Ajusta automáticamente el ancho según el contenido */
+    margin-right: 10px;
+    text-align: center;
+}
+
+
+
+#logout {
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    background-color: #0267FF;
+    border: 3px solid #1900ff;
+    border-radius: 1em;
+    margin-top: 1em;
+    padding: 0.5em;
+    width: 100%;
+}
+
+.btn-baja {
+    background-color: #ff0a02;
+    border-radius: 1em;
+    padding: 0.5em;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    width: auto; /* Ajustar el tamaño automáticamente */
+    margin-right: 10px;
+    text-align: center;
+}
+
+.btn-alta {
+    background-color: #119600;
+    border-radius: 1em;
+    padding: 0.5em;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    width: auto; /* Ajustar el tamaño automáticamente */
+    margin-right: 10px;
+    text-align: center;
+}
+

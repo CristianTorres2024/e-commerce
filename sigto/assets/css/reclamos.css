@@ -1,0 +1,89 @@
+/* Estilo general del formulario */
+.reclamo-form {
+    border: 2px solid #0267FF; 
+    text-align: center;
+    max-width: 600px; /* Ajustar el ancho del formulario */
+    margin: 50px auto; /* Centrar y añadir margen superior */
+    padding: 60px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.reclamo-form h2 {
+    margin-bottom: 40px;
+    font-size: 3rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-group {
+    font-family: Arial, sans-serif;
+    margin-bottom: 30px;
+    text-align: left; /* Para que las etiquetas estén alineadas a la izquierda */
+    width: 100%; /* Ancho completo de los grupos */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    color: #555;
+}
+
+#asunto, #reclamo{
+    /* Estilo específico para los campos de texto */
+    font-family: Arial, sans-serif;
+    width: 100%; /* Hacer que los campos ocupen el 100% del contenedor */
+    padding: 10px;
+    border: 2px solid #007BFF;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    background-color: #ffffff;
+}
+
+#asunto:hover, #reclamo:hover{
+    border-color: #0056b3;
+}
+
+
+/* Estilo específico para el área de texto del reclamo */
+textarea {
+    min-height: 150px; /* Reducir la altura del textarea */
+    max-width: 90%; /* Reducir el ancho para centrarlo mejor */
+    resize: vertical;
+    margin: 0 auto; /* Centrar horizontalmente */
+    display: block; /* Garantizar que el elemento se comporte como bloque */
+}
+
+/* Estilo del botón de envío */
+#botoncito {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#botoncito button {
+    width: 50%; /* Ajustar el tamaño del botón */
+    padding: 10px;
+    background-color: #0267FF;
+    color: white;
+    border: 2px solid #0267FF;
+    border-radius: 15px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 auto; /* Para centrar el botón */
+    display: block;
+}
+
+#botoncito button:hover {
+    background-color: #5CE1E6;
+}
+
+/* Mejora para pantallas grandes */
+@media (min-width: 768px) {
+    .reclamo-form {
+        max-width: 700px; /* Ajuste para pantallas más grandes */
+    }
+}
