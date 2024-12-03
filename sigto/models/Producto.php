@@ -121,6 +121,14 @@ class Producto {
 
     // Método para crear un producto (incluyendo el tipo de stock)
     public function create() {
+
+        // Validar el atributo imagen
+        if (!preg_match('/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|png|gif)$/', $this->imagen)) {
+        echo "Error: Nombre de archivo de imagen no válido.";
+        return false;
+        }
+
+        
         $query = "INSERT INTO producto (idemp, nombre, descripcion, estado, origen, stock, precio, imagen, visible, tipo_stock) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)";
         $stmt = $this->conn->prepare($query);
@@ -257,8 +265,19 @@ class Producto {
         return $result->fetch_assoc();
     }
 
+    private function validarImagen($imagen) {
+        // Validar el nombre del archivo de imagen
+        return preg_match('/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|png|gif)$/', $imagen);
+    }
+
     // Método para actualizar un producto
     public function update() {
+
+        if (!empty($this->imagen) && !$this->validarImagen($this->imagen)) {
+            echo "Error: Nombre de archivo de imagen no válido.";
+            return false;
+        }
+
         // Verificar si el tipo de stock es "unidad", en cuyo caso no se actualiza el stock
         if ($this->tipo_stock === 'unidad') {
             $query = "UPDATE " . $this->table_name . " 

@@ -100,38 +100,29 @@ class ProductoController {
         return $producto->readVisibleProducts(); // Llama a un método en el modelo
     }
 
-// Función para actualizar el producto
-public function update($data) {
-    $producto = new Producto('write');
-    $producto->setSku($data['sku']);
-    $producto->setIdEmp($_SESSION['idemp']);
-    $producto->setNombre($data['nombre']);
-    $producto->setDescripcion($data['descripcion']);
-    $producto->setEstado($data['estado']);
-    $producto->setOrigen($data['origen']);
-    $producto->setPrecio($data['precio']);
+    public function update($data) {
+        $producto = new Producto('write');
+        $producto->setSku($data['sku']);
+        $producto->setIdEmp($_SESSION['idemp']);
+        $producto->setNombre($data['nombre']);
+        $producto->setDescripcion($data['descripcion']);
+        $producto->setEstado($data['estado']);
+        $producto->setOrigen($data['origen']);
+        $producto->setPrecio($data['precio']);
     
-    // Manejar la imagen
-    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-        $tmp_name = $_FILES['imagen']['tmp_name'];
-        $nombreImagen = basename($_FILES['imagen']['name']);
-        $rutaDestino = __DIR__ . '/../assets/images/' . $nombreImagen;
-        if (move_uploaded_file($tmp_name, $rutaDestino)) {
-            $producto->setImagen($nombreImagen);
+        // Manejar la imagen
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+            $tmp_name = $_FILES['imagen']['tmp_name'];
+            $nombreImagen = basename($_FILES['imagen']['name']);
+            $rutaDestino = __DIR__ . '/../assets/images/' . $nombreImagen;
+            if (move_uploaded_file($tmp_name, $rutaDestino)) {
+                $producto->setImagen($nombreImagen);
+            }
         } else {
-            return "Error al subir la nueva imagen.";
+            $producto->setImagen($data['imagenActual']);
         }
-    } else {
-        $producto->setImagen($data['imagenActual']);
-    }
-
-    // Manejar la categoría
-    if (isset($data['categoria']) && $data['categoria'] !== "") {
-        $producto->eliminarCategoria($data['sku']);
-        $producto->asignarCategoria($data['sku'], $data['categoria']);
-    }
-
-    // Verificar el tipo de stock y actuar en consecuencia
+        
+         // Verificar el tipo de stock y actuar en consecuencia
     if ($data['tipo_stock'] === 'cantidad') {
         // Si es por cantidad, actualizar el stock
         $producto->setStock($data['stock']);
@@ -161,64 +152,49 @@ public function update($data) {
         return ['status' => 'error', 'message' => 'Tipo de stock inválido.'];
     }
 
-    // Manejar la oferta (sin cambios)
-    $ofertaController = new OfertaController();
-    $ofertaActual = $ofertaController->readBySku($data['sku']); // Verificar si ya existe una oferta
 
-    if (isset($data['oferta']) && $data['oferta'] > 0) {
-        $precioOferta = $data['precio'] - ($data['precio'] * ($data['oferta'] / 100));
+ // Manejar la oferta
+$ofertaController = new OfertaController();
+$dataOferta = [
+    'sku' => $data['sku'],
+    'porcentaje_oferta' => (float)$data['oferta'], // Asegúrate de que sea un número
+    'preciooferta' => (float)$data['precio'] - ((float)$data['precio'] * ((float)$data['oferta'] / 100)), // Conversión explícita
+    'fecha_inicio' => $data['fecha_inicio'],
+    'fecha_fin' => $data['fecha_fin']
+];
 
-        // Si no se proporcionan fechas nuevas, usar las fechas actuales
-        if (!empty($ofertaActual)) {
-            $fechaInicio = !empty($data['fecha_inicio']) ? $data['fecha_inicio'] : $ofertaActual['fecha_inicio'];
-            $fechaFin = !empty($data['fecha_fin']) ? $data['fecha_fin'] : $ofertaActual['fecha_fin'];
-        } else {
-            // Si no hay una oferta previa, es necesario proporcionar fechas nuevas
-            $fechaInicio = !empty($data['fecha_inicio']) ? $data['fecha_inicio'] : null;
-            $fechaFin = !empty($data['fecha_fin']) ? $data['fecha_fin'] : null;
-        }
 
-        // Validar que las fechas sean correctas (si no hay fechas, se mostrará un error)
-        if ($fechaInicio && $fechaFin && $fechaInicio <= $fechaFin) {
-            $dataOferta = [
-                'sku' => $data['sku'],
-                'porcentaje_oferta' => $data['oferta'],
-                'preciooferta' => $precioOferta,
-                'fecha_inicio' => $fechaInicio,
-                'fecha_fin' => $fechaFin
-            ];
+// Verificar si ya existe una oferta
+$ofertaActual = $ofertaController->readBySku($data['sku']);
 
-            // Actualizar o crear la oferta dependiendo de si ya existe
-            if ($ofertaActual) {
-                $ofertaController->update($dataOferta); // Actualizar la oferta existente
-            } else {
-                $ofertaController->create($dataOferta); // Crear una nueva oferta si no existe
-            }
-        } else {
-            return "Error: Fechas de oferta inválidas o incompletas.";
-        }
-    } else {
-        // Si solo se está actualizando el porcentaje de la oferta, recalcular el precio de oferta
-        if ($ofertaActual) {
-            $precioOferta = $data['precio'] - ($data['precio'] * ($ofertaActual['porcentaje_oferta'] / 100));
-            $dataOferta = [
-                'sku' => $data['sku'],
-                'porcentaje_oferta' => $ofertaActual['porcentaje_oferta'],
-                'preciooferta' => $precioOferta,
-                'fecha_inicio' => $ofertaActual['fecha_inicio'], // Mantener fechas anteriores
-                'fecha_fin' => $ofertaActual['fecha_fin'] // Mantener fechas anteriores
-            ];
-            $ofertaController->update($dataOferta); // Actualizar solo el precio de la oferta
-        }
+if (!empty($ofertaActual)) {
+    // Si ya existe, actualizar la oferta
+    $resultado = $ofertaController->update($dataOferta);
+    if ($resultado['status'] !== 'success') {
+        return "Error al actualizar la oferta.";
     }
-
-    // Actualizar el producto
-    if ($producto->update()) {
-        return "Producto actualizado exitosamente.";
+} else {
+    // Si no existe, validar datos y crear la oferta
+    if (!empty($data['oferta']) && $data['oferta'] > 0 && !empty($data['fecha_inicio']) && !empty($data['fecha_fin'])) {
+        $resultado = $ofertaController->create($dataOferta);
+        if ($resultado['status'] !== 'success') {
+            return "Error al crear la oferta.";
+        }
     } else {
-        return "Error al actualizar producto.";
+        return "Error: Los datos de la nueva oferta son incompletos.";
     }
 }
+
+
+    
+        // Actualizar producto
+        if ($producto->update()) {
+            return "Producto actualizado exitosamente.";
+        } else {
+            return "Error al actualizar producto.";
+        }
+    }
+
 
     
     

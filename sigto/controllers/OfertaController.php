@@ -4,19 +4,20 @@ require_once __DIR__ . '/../models/Oferta.php';
 class OfertaController {
 
     public function create($data) {
-        $oferta = new Oferta();
+        $oferta = new Oferta('write');
         $oferta->setSku($data['sku']);
         $oferta->setPorcentajeOferta($data['porcentaje_oferta']);
         $oferta->setPrecioOferta($data['preciooferta']);
         $oferta->setFechaInicio($data['fecha_inicio']);
         $oferta->setFechaFin($data['fecha_fin']);
-
+    
         if ($oferta->create()) {
             return ['status' => 'success', 'message' => 'Oferta creada exitosamente.'];
         } else {
             return ['status' => 'error', 'message' => 'Error al crear la oferta.'];
         }
     }
+    
 
     public function readBySku($sku) {
         $oferta = new Oferta();

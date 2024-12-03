@@ -52,21 +52,22 @@ $categorias = $categoriaController->getAllCategorias(); // Obtiene todas las cat
         <label for="precio">Precio:</label>
         <input type="number" id="precio" name="precio" step="0.01" value="<?php echo htmlspecialchars($productoSeleccionado['precio']); ?>" required>
 
+
         <?php if ($productoSeleccionado['tipo_stock'] === 'cantidad'): ?>
         <!-- Si el tipo de stock es "cantidad", muestra el campo de stock -->
         <label for="stock">Stock (Cantidad):</label>
-        <input type="number" id="stock" name="stock" value="<?php echo htmlspecialchars($productoSeleccionado['stock']); ?>" required>
+        <input type="number" id="stock" name="stock" value="<?php echo isset($productoSeleccionado['stock']) ? htmlspecialchars($productoSeleccionado['stock']) : ''; ?>" required>
         <?php elseif ($productoSeleccionado['tipo_stock'] === 'unidad'): ?>
         <!-- Si el tipo de stock es "unidad", muestra el textarea para agregar los códigos de unidades -->
         <label for="codigos_unitarios">Códigos de las unidades (separados por comas):</label>
         <textarea id="codigos_unitarios" name="codigos_unitarios" rows="4" placeholder="Ingrese los códigos de cada unidad, separados por comas..."><?php 
-            // Verificar si ya hay códigos unitarios para este producto
-            if (isset($productoSeleccionado['codigo_unidad'])) {
-                // Convertir a array si es necesario, y mostrar los códigos separados por comas
-                echo htmlspecialchars(implode(',', (array)$productoSeleccionado['codigo_unidad']));
-            }
+        // Mostrar los códigos unitarios existentes
+        if (isset($productoSeleccionado['codigos_unitarios'])) {
+            echo htmlspecialchars(implode(',', (array)$productoSeleccionado['codigos_unitarios']));
+        }
         ?></textarea>
         <?php endif; ?>
+
 
 
         <label for="imagen" class="custom-file-upload">
@@ -95,13 +96,14 @@ $categorias = $categoriaController->getAllCategorias(); // Obtiene todas las cat
         <?php else: ?>
             <!-- Si no existe una oferta previa, permitir crear una nueva -->
             <label for="oferta">Nueva Oferta (Descuento en %):</label>
-            <input type="number" id="oferta" name="oferta" min="0" max="100">
+            <input type="number" id="oferta" name="oferta" value="<?php echo isset($ofertaSeleccionada['porcentaje_oferta']) ? htmlspecialchars($ofertaSeleccionada['porcentaje_oferta']) : ''; ?>" min="0" max="100">
 
             <label for="fecha_inicio">Fecha de inicio de la oferta:</label>
-            <input type="date" id="fecha_inicio" name="fecha_inicio">
+            <input type="date" id="fecha_inicio" name="fecha_inicio" value="<?php echo isset($ofertaSeleccionada['fecha_inicio']) ? htmlspecialchars($ofertaSeleccionada['fecha_inicio']) : ''; ?>">
 
             <label for="fecha_fin">Fecha de fin de la oferta:</label>
-            <input type="date" id="fecha_fin" name="fecha_fin">
+            <input type="date" id="fecha_fin" name="fecha_fin" value="<?php echo isset($ofertaSeleccionada['fecha_fin']) ? htmlspecialchars($ofertaSeleccionada['fecha_fin']) : ''; ?>">
+
         <?php endif; ?>
 
         <button type="submit">Actualizar Producto</button>
@@ -113,3 +115,16 @@ $categorias = $categoriaController->getAllCategorias(); // Obtiene todas las cat
 <?php else: ?>
 <p>No se encontró el producto a editar.</p>
 <?php endif; ?>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const oferta = document.getElementById('oferta').value;
+        const fechaInicio = document.getElementById('fecha_inicio').value;
+        const fechaFin = document.getElementById('fecha_fin').value;
+
+        if (oferta > 0 && (!fechaInicio || !fechaFin || fechaInicio > fechaFin)) {
+            event.preventDefault();
+            alert('Por favor, ingresa fechas válidas para la oferta.');
+        }
+    });
+</script>

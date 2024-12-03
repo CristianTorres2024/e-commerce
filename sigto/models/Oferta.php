@@ -88,7 +88,7 @@ class Oferta {
         if ($stmt->execute()) {
             return true;
         } else {
-            echo "Error en la ejecución: " . $stmt->error;
+            echo "Error al ejecutar la consulta: " . $stmt->error;
             return false;
         }
     }
