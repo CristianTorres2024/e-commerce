@@ -122,7 +122,7 @@ public function registrarDetalleVenta($idventa, $sku, $cantidad, $precio_unitari
 
 public function obtenerHistorialVentas($idemp) {
     // Consulta para obtener las ventas realizadas por la empresa
-    $queryVentas = "SELECT idventa, fecha, stock FROM venta WHERE idemp = ?";
+    $queryVentas = "SELECT idventa, fecha, total_venta FROM venta WHERE idemp = ?";
     $stmtVentas = $this->conn->prepare($queryVentas);
 
     if (!$stmtVentas) {
