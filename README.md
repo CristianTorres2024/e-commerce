@@ -9,8 +9,8 @@ Este es un sistema de comercio electrónico desarrollado como proyecto académic
 
 ## Tecnologías utilizadas
 
-* Back-end: PHP (≈ 78 % del proyecto) y Hack (~10 %).
-* Front-end: JavaScript (~5 %) y CSS (~7 %).
+* Back-end: PHP.
+* Front-end: JavaScript y CSS.
 * Base de datos: MySQL (o archivos SQL de estructura: `oceantrade.sql`, `permisos.sql`).
 * Control de versiones: Git + GitHub.
 * Desarrollo: Visual Studio Code, entorno local (XAMPP/VirtualBox).
